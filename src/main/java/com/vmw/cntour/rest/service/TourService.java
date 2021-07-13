@@ -38,13 +38,14 @@ public class TourService {
    * @param tourRequest
    * @return
    */
-  public Mono<TourResponse> buildTour(TourRequest tourRequest) {
+  public Mono<TourResponse> buildTour(TourRequest tourRequest) throws Exception {
 
     Flux<CountryInfo> borderCountriesFlux = countriesService.getBorderCountries(tourRequest.getStartingCountry());
 
-    List<CountryInfo> borderCountries = borderCountriesFlux.collectList().block();
+
+    List<CountryInfo> borderCountries = borderCountriesFlux.toStream().collect(Collectors.toList());
     if (borderCountries.isEmpty()) {
-      return Mono.empty();
+      return Mono.error(new Exception("unknown country " + tourRequest.getStartingCountry()));
     }
 
     /* calculate the number of tours and the leftover amount, we can do that now. */

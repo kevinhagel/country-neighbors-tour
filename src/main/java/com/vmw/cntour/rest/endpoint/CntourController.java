@@ -40,7 +40,7 @@ public class CntourController {
    * @return
    */
   @PostMapping("requestTour")
-  public Mono<TourResponse> requestTour(@RequestBody TourRequest tourRequest) {
+  public Mono<TourResponse> requestTour(@RequestBody TourRequest tourRequest) throws Exception {
     log.info("tour request {}", tourRequest);
     return tourService.buildTour(tourRequest);
   }
