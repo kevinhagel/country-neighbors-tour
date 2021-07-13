@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 /**
  * TourCountry an element in the tour, this pojo describes the country, the currency it uses, the amount of money
  * the user can spend of that.
@@ -20,6 +22,6 @@ public class TourCountry {
 
   private String country;
   private String currency;
-  private Double budget;
+  private BigDecimal budget;
 
 }

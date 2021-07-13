@@ -46,9 +46,9 @@ public class CntourController {
   }
 
   @GetMapping("exchange")
-  public Mono<ExchangeRates> exchange(@RequestParam("from") String from, @RequestParam("to") String to, @RequestParam("amount")
+  public Mono<BigDecimal> exchange(@RequestParam("from") String from, @RequestParam("to") String to, @RequestParam("amount")
       BigDecimal amount) {
-    return exchangeRatesService.exchangeConversion(from, to, amount);
+    return Mono.just(exchangeRatesService.exchangeConversion(from, to, amount));
 
   }
 

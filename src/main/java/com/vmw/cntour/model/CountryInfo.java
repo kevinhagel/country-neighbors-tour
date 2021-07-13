@@ -21,6 +21,7 @@ public class CountryInfo {
 
   private String name;
   private String alpha3Code;
+  private String alpha2Code;
   private List<String> borders;
   private List<String> currencies;
 

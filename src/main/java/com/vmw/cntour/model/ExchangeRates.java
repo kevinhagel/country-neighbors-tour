@@ -1,19 +1,13 @@
 package com.vmw.cntour.model;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * ExchangeRates the result of the "latest" exchange rates compared to the EUR.
@@ -31,12 +25,8 @@ public class ExchangeRates {
   private String timestamp;
   private String base;
   private String date;
-  private List<Rate> rates = new ArrayList<>();
+  private Map<String, BigDecimal> rates = new HashMap<>();
 
-  public void setRates(JsonNode jsonNode) throws JsonProcessingException {
-    System.out.println("jsonNode = " + jsonNode);
-
-  }
 
   @Data
   @NoArgsConstructor

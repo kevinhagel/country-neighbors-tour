@@ -11,7 +11,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,7 +43,7 @@ public class TourService {
     Flux<CountryInfo> borderCountriesFlux = countriesService.getBorderCountries(tourRequest.getStartingCountry());
 
     List<CountryInfo> borderCountries = borderCountriesFlux.collectList().block();
-    if(borderCountries.isEmpty()) {
+    if (borderCountries.isEmpty()) {
       return Mono.empty();
     }
 
@@ -56,12 +55,17 @@ public class TourService {
 
     /* ok, now we need to calculate the exchange values for each country in the tour */
 
-    borderCountries
+    List<TourCountry> tourCountryList = borderCountries
         .stream()
         .map(borderCountry -> {
-
+          String toCurrency = borderCountry.getCurrencies().stream().findFirst().orElse(tourRequest.getCurrency());
+          BigDecimal budget = exchangeRatesService
+              .exchangeConversion(tourRequest.getCurrency(), toCurrency, tourRequest.getBudgetPerCountry());
           return TourCountry
               .builder()
+              .budget(budget)
+              .country(borderCountry.getName())
+              .currency(toCurrency)
               .build();
         })
         .collect(Collectors.toList());
@@ -74,8 +78,9 @@ public class TourService {
         .currency(tourRequest.getCurrency())
         .remainder(leftoverAmount)
         .startCountry(tourRequest.getStartingCountry())
-//        .tourCountryList(tourCountryList)
-        .build();;
+        .tourCountryList(tourCountryList)
+        .build();
+    ;
 
     return Mono.justOrEmpty(tourResponse);
 

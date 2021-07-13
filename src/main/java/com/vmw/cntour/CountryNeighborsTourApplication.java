@@ -7,20 +7,14 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.annotation.PostConstruct;
 
-@EnableWebMvc
+//@EnableWebMvc
 @SpringBootApplication
 public class CountryNeighborsTourApplication {
 
-  @Autowired
-  private AppConfigurationProperties appConfigurationProperties;
 
   public static void main(String[] args) {
     SpringApplication.run(CountryNeighborsTourApplication.class, args);
   }
 
-  @PostConstruct
-  public void init() {
-    System.out.println("appConfigurationProperties = " + appConfigurationProperties);
-  }
 
 }
