@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import javax.annotation.PostConstruct;
@@ -46,10 +45,10 @@ public class ExchangeRatesService {
 
 
   /**
-   * After injection execute the webclient in a boundecElastic thread to load the exchange rates into our cache.
+   * After injection execute the webclient in a boundedElastic thread to load the exchange rates into our cache.
    */
   @PostConstruct
-  public void init()  {
+  public void init() {
     exchangeRatesClient
         .get()
         .uri(uriBuilder -> uriBuilder
@@ -60,8 +59,8 @@ public class ExchangeRatesService {
         .bodyToMono(ExchangeRates.class)
         .doOnError(throwable -> log.error("error loading exchange rates", throwable))
         .subscribeOn(Schedulers.boundedElastic())
-        .subscribe(this::setExchangeRatesCache)
-    ;
+        .doOnSuccess(exchangeRates -> log.info("Completed loading {} exchange rates ", exchangeRates.getRates().size()))
+        .subscribe(this::setExchangeRatesCache);
   }
 
   /**
@@ -77,21 +76,17 @@ public class ExchangeRatesService {
    * Perform the conversion.  My subscription does not include access to their exchange endpoint, so I have to get them
    * all, do the math myself.
    *
-   * @param from
-   * @param to
-   * @param amount
-   * @return
+   * @param from   the original currency
+   * @param to     the destination currency.
+   * @param amount the amount to convert.
+   * @return the converted result.
    */
   public BigDecimal exchangeConversion(String from, String to, BigDecimal amount) {
-
     BigDecimal fromRate = exchangeRatesCache.getRates().getOrDefault(from, amount);
     BigDecimal toRate = exchangeRatesCache.getRates().getOrDefault(to, amount);
-
-    BigDecimal result = amount
+    return amount
         .multiply(toRate, MathContext.DECIMAL32)
         .divide(fromRate, 4, RoundingMode.HALF_UP);
-
-    return result;
   }
 
 }

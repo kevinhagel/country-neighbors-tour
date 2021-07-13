@@ -24,10 +24,8 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class TourService {
-  @Autowired
-  private CountriesService countriesService;
 
-  @Autowired
+  private CountriesService countriesService;
   private ExchangeRatesService exchangeRatesService;
 
 
@@ -84,6 +82,26 @@ public class TourService {
         .startCountry(tourRequest.getStartingCountry())
         .tourCountryList(tourCountryList)
         .build();
-
   }
+
+  /**
+   * Set the countries service
+   *
+   * @param countriesService the countries service to set.
+   */
+  @Autowired
+  public void setCountriesService(CountriesService countriesService) {
+    this.countriesService = countriesService;
+  }
+
+  /**
+   * Set the exchange rates service.
+   *
+   * @param exchangeRatesService the exchange rates service to set.
+   */
+  @Autowired
+  public void setExchangeRatesService(ExchangeRatesService exchangeRatesService) {
+    this.exchangeRatesService = exchangeRatesService;
+  }
+
 }

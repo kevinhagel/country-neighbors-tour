@@ -52,6 +52,7 @@ public class CountriesService {
         .doOnNext(this::addCountry)
         .subscribeOn(Schedulers.boundedElastic())
         .doOnError(throwable -> log.error("error loading api countries list", throwable))
+        .doOnComplete(() -> log.info("Completed loading {} rapid api countries", countriesCache.size()))
         .subscribe();
   }
 
