@@ -6,7 +6,6 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @EnableWebMvc
-//@EnableWebFlux
 @SpringBootApplication
 public class CountryNeighborsTourApplication {
 

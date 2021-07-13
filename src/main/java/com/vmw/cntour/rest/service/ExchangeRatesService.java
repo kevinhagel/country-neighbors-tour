@@ -9,12 +9,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
-import java.nio.charset.StandardCharsets;
 
 /**
  * ExchangeRatesService provides access to the exchange rates data, performs exchanges.  For this to work as a simple
@@ -40,15 +41,15 @@ public class ExchangeRatesService {
   @Value("classpath:exchange-rates.json")
   private Resource exchangeRatesJson;
 
-  private void setExchangeRatesCache(ExchangeRates exchangeRatesCache) {
-    this.exchangeRatesCache = exchangeRatesCache;
-  }
 
   private ExchangeRates exchangeRatesCache;
 
 
+  /**
+   * After injection execute the webclient in a boundecElastic thread to load the exchange rates into our cache.
+   */
   @PostConstruct
-  public void init() throws Exception {
+  public void init()  {
     exchangeRatesClient
         .get()
         .uri(uriBuilder -> uriBuilder
@@ -57,13 +58,20 @@ public class ExchangeRatesService {
             .build())
         .retrieve()
         .bodyToMono(ExchangeRates.class)
-        .doOnSuccess(success -> System.out.println("success = " + success))
+        .doOnError(throwable -> log.error("error loading exchange rates", throwable))
+        .subscribeOn(Schedulers.boundedElastic())
         .subscribe(this::setExchangeRatesCache)
     ;
-//    exchangeRatesCache = objectMapper.readValue(exchangeRatesJson.getInputStream(), ExchangeRates.class);
-
   }
 
+  /**
+   * Used in the webclient load to set the exchangeRatesCache
+   *
+   * @param exchangeRatesCache the value to set in the cache.
+   */
+  private void setExchangeRatesCache(ExchangeRates exchangeRatesCache) {
+    this.exchangeRatesCache = exchangeRatesCache;
+  }
 
   /**
    * Perform the conversion.  My subscription does not include access to their exchange endpoint, so I have to get them

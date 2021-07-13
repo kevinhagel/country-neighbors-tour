@@ -4,11 +4,11 @@ import com.vmw.cntour.model.CountryInfo;
 import com.vmw.cntour.model.TourCountry;
 import com.vmw.cntour.model.TourRequest;
 import com.vmw.cntour.model.TourResponse;
+import com.vmw.cntour.rest.CountryCodeNotFoundException;
+import com.vmw.cntour.rest.NoBordersException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -35,18 +35,21 @@ public class TourService {
    * Build the tour.  First we need to locate the border countries of the given home country;  Find their currencies,
    * get the exchange rates ec.
    *
-   * @param tourRequest
-   * @return
+   * @param tourRequest the tour request information.
+   * @return a tour response.
+   * @throws Exception for any needed exception.
    */
-  public Mono<TourResponse> buildTour(TourRequest tourRequest) throws Exception {
+  public TourResponse buildTour(TourRequest tourRequest) throws Exception {
 
-    Flux<CountryInfo> borderCountriesFlux = countriesService.getBorderCountries(tourRequest.getStartingCountry());
+    CountryInfo startingCountry = countriesService
+        .findCountry(tourRequest.getStartingCountry())
+        .orElseThrow(() -> new CountryCodeNotFoundException("unknown country " + tourRequest.getStartingCountry()));
 
-
-    List<CountryInfo> borderCountries = borderCountriesFlux.toStream().collect(Collectors.toList());
+    List<CountryInfo> borderCountries = countriesService.getBorderCountries(startingCountry);
     if (borderCountries.isEmpty()) {
-      return Mono.error(new Exception("unknown country " + tourRequest.getStartingCountry()));
+      throw new NoBordersException("no border countries for " + startingCountry.getName());
     }
+
 
     /* calculate the number of tours and the leftover amount, we can do that now. */
     int numberCountries = borderCountries.size();
@@ -72,7 +75,7 @@ public class TourService {
         .collect(Collectors.toList());
 
 
-    TourResponse tourResponse = TourResponse
+    return TourResponse
         .builder()
         .totalBudget(tourRequest.getTotalBudget())
         .numberOfTours(numberTours.intValue())
@@ -81,9 +84,6 @@ public class TourService {
         .startCountry(tourRequest.getStartingCountry())
         .tourCountryList(tourCountryList)
         .build();
-    ;
-
-    return Mono.justOrEmpty(tourResponse);
 
   }
 }
