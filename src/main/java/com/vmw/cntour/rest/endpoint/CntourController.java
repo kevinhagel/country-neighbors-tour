@@ -5,10 +5,11 @@ import com.vmw.cntour.model.TourResponse;
 import com.vmw.cntour.rest.service.TourService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * CntourController
@@ -20,8 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/")
 @Slf4j
 public class CntourController {
-
-
   @Autowired
   private TourService tourService;
 

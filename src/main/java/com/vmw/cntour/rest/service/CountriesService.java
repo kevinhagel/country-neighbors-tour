@@ -1,11 +1,8 @@
 package com.vmw.cntour.rest.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vmw.cntour.model.CountryInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.scheduler.Schedulers;
@@ -28,14 +25,9 @@ import java.util.stream.Collectors;
 @Slf4j
 public class CountriesService {
 
-  @Autowired
   private WebClient rapidApiCountriesClient;
-  @Autowired
-  private ObjectMapper objectMapper;
-  private ConcurrentHashMap<String, CountryInfo> countriesCache = new ConcurrentHashMap<>();
 
-  @Value("classpath:rest-countries.json")
-  private Resource restCountriesJson;
+  private ConcurrentHashMap<String, CountryInfo> countriesCache = new ConcurrentHashMap<>();
 
 
   /**
@@ -111,6 +103,16 @@ public class CountriesService {
     List<String> borders = foundCountry.get().getBorders();
     return borders.stream().map(borderCountry -> countriesCache.get(borderCountry))
         .filter(Objects::nonNull).collect(Collectors.toList());
+  }
+
+  /**
+   * Set the rapid api countries client
+   *
+   * @param rapidApiCountriesClient the client to set.
+   */
+  @Autowired
+  public void setRapidApiCountriesClient(WebClient rapidApiCountriesClient) {
+    this.rapidApiCountriesClient = rapidApiCountriesClient;
   }
 
 }

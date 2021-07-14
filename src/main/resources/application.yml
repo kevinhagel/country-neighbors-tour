@@ -1,0 +1,36 @@
+app:
+  exchangeRatesUrl: http://api.exchangeratesapi.io/v1/
+  exchangeRatesAPIAccessKey: c7108fa774a2ec35837fcd819023d4cb
+  # x-rapidapi-key
+  rapidapi-key: c2bf580853mshd1ebd977c2a2a0bp1de75bjsn4a12890d287f
+  # x-rapidapi-host
+  rapidapi-host: ajayakv-rest-countries-v1.p.rapidapi.com
+  rapidapi-url: https://ajayakv-rest-countries-v1.p.rapidapi.com/rest/v1/all/
+
+#springdoc:
+#  swagger-ui:
+#    disable-swagger-default-url: true
+#    configUrl: /v3/api-docs
+
+spring:
+  application:
+    name: Country Neighbors Tour
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 89846130708-l30q28rpq2c7dl70s9vmppq3m4rfqn73.apps.googleusercontent.com
+            client-secret: c3C_Lt3HVUXTxZK5E9pYocpw
+  thymeleaf:
+    cache: false
+    enabled: true
+    prefix: classpath:/templates/
+    suffix: .html
+
+server:
+  port: 8080
+
+logging:
+  level:
+    org.springframework.web.client.RestTemplate: debug
