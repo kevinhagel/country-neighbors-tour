@@ -58,6 +58,7 @@ public class HomeController {
         .bodyToMono(String.class)
         .map(string
             -> "Retrieved using Client Credentials Grant Type: " + string)
+        .doOnError(throwable -> System.out.println("fucking error " + throwable))
         .subscribe(d -> log.info("d = " + d));
 
     return "home";
