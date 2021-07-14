@@ -37,5 +37,10 @@ public class CntourController {
     return tourService.buildTour(tourRequest);
   }
 
+  @GetMapping("/oidc-principal")
+  public OidcUser getOidcUserPrincipal(
+      @AuthenticationPrincipal OidcUser principal) {
+    return principal;
+  }
 
 }

@@ -31,9 +31,5 @@ public class HomeController {
     return "home";
   }
 
-  @GetMapping("/oidc-principal")
-  public OidcUser getOidcUserPrincipal(
-      @AuthenticationPrincipal OidcUser principal) {
-    return principal;
-  }
+
 }
