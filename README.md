@@ -6,6 +6,9 @@ This is a maven spring boot project.  To execute:
 
 ```./mvnw spring-boot:run```
 
+The opeanapi swagger page is at:
+[http://localhost:8080/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config](http://localhost:8080/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config)
+
 The rest api is at:
 
 [http://localhost:8080/api/v1/requestTour](http://localhost:8080/api/v1/requestTour) 
@@ -61,3 +64,7 @@ In a perfect world, the above POST will produce the following:
 I have added the ability to allow the user to enter "Bulgaria" rather than BGR.
 
 This project uses spring web client to load the required data for execution.  
+
+google client id:  89846130708-l30q28rpq2c7dl70s9vmppq3m4rfqn73.apps.googleusercontent.com
+google client secret: c3C_Lt3HVUXTxZK5E9pYocpw
+
