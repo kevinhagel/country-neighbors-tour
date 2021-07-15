@@ -22,6 +22,6 @@ public class TourRequest {
   private String startingCountry;
   private BigDecimal budgetPerCountry;
   private BigDecimal totalBudget;
-  private String currency;
+  private String budgetCurrency;
 
 }

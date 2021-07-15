@@ -60,9 +60,9 @@ public class TourService {
     List<TourCountry> tourCountryList = borderCountries
         .stream()
         .map(borderCountry -> {
-          String toCurrency = borderCountry.getCurrencies().stream().findFirst().orElse(tourRequest.getCurrency());
+          String toCurrency = borderCountry.getCurrencies().stream().findFirst().orElse(tourRequest.getBudgetCurrency());
           BigDecimal budget = exchangeRatesService
-              .exchangeConversion(tourRequest.getCurrency(), toCurrency, tourRequest.getBudgetPerCountry());
+              .exchangeConversion(tourRequest.getBudgetCurrency(), toCurrency, tourRequest.getBudgetPerCountry());
           return TourCountry
               .builder()
               .budget(budget)
@@ -77,7 +77,7 @@ public class TourService {
         .builder()
         .totalBudget(tourRequest.getTotalBudget())
         .numberOfTours(numberTours.intValue())
-        .currency(tourRequest.getCurrency())
+        .currency(tourRequest.getBudgetCurrency())
         .remainder(leftoverAmount)
         .startCountry(tourRequest.getStartingCountry())
         .tourCountryList(tourCountryList)

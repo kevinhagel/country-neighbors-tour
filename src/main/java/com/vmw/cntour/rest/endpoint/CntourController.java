@@ -7,6 +7,7 @@ import com.vmw.cntour.rest.service.TourService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,7 @@ public class CntourController {
    * @param tourRequest the request arriving from the client.
    * @return a tour response.
    */
-  @PostMapping("/requestTour")
+  @PostMapping(value = "/requestTour")
   public TourResponse requestTour(@RequestBody TourRequest tourRequest) throws Exception {
     log.info("tour request {}", tourRequest);
     return tourService.buildTour(tourRequest);
