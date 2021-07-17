@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,22 +57,24 @@ public class TourService {
     BigDecimal leftoverAmount = tourRequest.getTotalBudget().subtract(oneTourCost.multiply(numberTours));
 
     /* ok, now we need to calculate the exchange values for each country in the tour */
-
-    List<TourCountry> tourCountryList = borderCountries
-        .stream()
-        .map(borderCountry -> {
-          String toCurrency = borderCountry.getCurrencies().stream().findFirst().orElse(tourRequest.getBudgetCurrency());
-          BigDecimal budget = exchangeRatesService
-              .exchangeConversion(tourRequest.getBudgetCurrency(), toCurrency, tourRequest.getBudgetPerCountry());
-          return TourCountry
-              .builder()
-              .budget(budget)
-              .country(borderCountry.getName())
-              .currency(toCurrency)
-              .build();
-        })
-        .collect(Collectors.toList());
-
+    List<TourCountry> tourCountryList = new ArrayList<>();
+    if (numberTours.intValue() > 0) {
+      tourCountryList = borderCountries
+          .stream()
+          .map(borderCountry -> {
+            String toCurrency = borderCountry.getCurrencies().stream().findFirst()
+                .orElse(tourRequest.getBudgetCurrency());
+            BigDecimal budget = exchangeRatesService
+                .exchangeConversion(tourRequest.getBudgetCurrency(), toCurrency, tourRequest.getBudgetPerCountry());
+            return TourCountry
+                .builder()
+                .budget(budget)
+                .country(borderCountry.getName())
+                .currency(toCurrency)
+                .build();
+          })
+          .collect(Collectors.toList());
+    }
 
     return TourResponse
         .builder()
