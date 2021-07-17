@@ -70,6 +70,7 @@ public class CntourController {
     return countriesService.findAll()
         .stream()
         .filter(countryInfo -> StringUtils.startsWithIgnoreCase(countryInfo.getName(), term))
+        .peek(c-> System.out.println(c))
         .collect(Collectors.toList());
   }
 

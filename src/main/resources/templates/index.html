@@ -15,15 +15,19 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script>
+<style>
+  #startingCountry {
+    z-index: 1051 !important;
+}
+</style>
+
 </head>
 
 <body>
-  FUC YOU
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-light bg-light shadow p-3 mb-5 bg-white rounded">
     <div class="container">
       <a href="#" class="navbar-brand">Country Neighbors Tour</a>
-
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -45,31 +49,31 @@
 
   <div class="container">
     <form class="row" id="tourForm">
-      <div class="row mb-3">
+      <div class="row mb-3 overflow-auto">
         <label for="startingCountry" class="col-sm-2 col-form-label">Country</label>
-        <div class="col-sm-6">
-          <input required type="text" class="form-control" id="startingCountry" placeholder="Starting Country"
-            value="Bulgaria">
+        <div class="col-sm-6  pull-right" id="starting-country-div">
+          <input required type="text" class="form-control " id="startingCountry" placeholder="Starting Country"
+            value="">
         </div>
       </div>
       <div class="row mb-3">
         <label for="budgetCurrency" class="col-sm-2 col-form-label">Currency</label>
         <div class="col-sm-6">
           <input required type="text" class="form-control" id="budgetCurrency" placeholder="Total Budget Currency"
-            value="BGN">
+            value="">
         </div>
       </div>
       <div class="row mb-3">
         <label for="totalBudget" class="col-sm-2 col-form-label">Total Budget</label>
         <div class="col-sm-6">
-          <input required type="number" class="form-control" id="totalBudget" placeholder="Total Budget" value="1200">
+          <input required type="number" class="form-control" id="totalBudget" placeholder="Total Budget" value="">
         </div>
       </div>
       <div class="row mb-3">
         <label for="budgetPerCountry" class="col-sm-2 col-form-label">Budget Per Country</label>
         <div class="col-sm-6">
           <input required type="number" class="form-control" id="budgetPerCountry" placeholder="Budget Per Country"
-            value="100">
+            value="">
         </div>
       </div>
 
@@ -84,8 +88,8 @@
       </div>
 
       <!-- Modal -->
-      <div class="modal modal-lg fade " data-bs-backdrop="static" data-bs-keyboard="false" id="exampleModal" tabindex="-1"
-        aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal modal-lg fade " data-bs-backdrop="static" data-bs-keyboard="false" id="exampleModal"
+        tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable">
           <div class="modal-content">
             <div class="modal-header">
@@ -117,12 +121,12 @@
                   </tr>
                 </thead>
                 <tbody id="tbody">
-                <!-- <tr class="result">
+                  <!-- <tr class="result">
                   <td th:text="${tourCountry.country}"></td>
                   <td th:text="${tourCountry.currency}"></td>
                   <td th:text="${tourCountry.budget}"></td>
                 </tr> -->
-              </tbody>
+                </tbody>
               </table>
 
 
@@ -198,28 +202,44 @@
       console.log("fucking reset");
     });
 
+    $(document).ready(function () {
+
+    });
+
 
     $(document).ready(function () {
-      $('#country').autocomplete({
-        minLength: 2,
+      $('#startingCountry').autocomplete({
+
         source: function (request, response) {
+          var param = {
+            term: request.term
+          };
           $.ajax({
+            contentType: 'application/json',
             url: 'http://localhost:8080/api/v1/countries',
             type: 'GET',
+            cache: false,
             dataType: 'json',
-            data: {
-              term: request.term
-            },
+            data: param,
             success: function (data) {
-              var terms = ["fuck", "shit", "asshole"];
 
-              response(terms);
+              var shit = $.map(data, function (item) {
+                return {
+                  value: item.name
+                }
+              });
+              response(shit);
             },
             error: function (data) {
-
+              alert('error! ' + data);
             }
           });
         },
+        minLength: 2,
+        select: function (event, ui) {
+          $("#startingCountry").val(ui.item.value);
+          return false;
+        }
       })
     })
 
