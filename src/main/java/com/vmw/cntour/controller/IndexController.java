@@ -25,17 +25,7 @@ import java.util.Optional;
 public class IndexController {
 
   @GetMapping("/")
-  public String homePage(HttpSession session,
-      Model model,
-      @ModelAttribute("tourRequest") TourRequest tourRequest,
-      @ModelAttribute("tourResponse") TourResponse tourResponse,
-      BindingResult bindingResult) {
-    model.addAttribute("appName", getClass().getSimpleName());
-    model.addAttribute("tourRequest", TourRequest.builder().build());
-
-    Optional.ofNullable(session.getAttribute("tourResponse")).map(TourResponse.class::cast)
-        .ifPresent(tourResponse1 -> model.addAttribute("tourResponse", tourResponse1));
-
+  public String homePage(HttpSession session) {
 
     return "index";
   }
