@@ -58,6 +58,10 @@ public class CountriesService {
   }
 
 
+  public List<CountryInfo> findAll() {
+    return countriesCache.values().stream().collect(Collectors.toList());
+  }
+
   /**
    * Try to find the country.  It might be that the user entered "Bulgaria" instead of BGR, let's try to protect them.
    *

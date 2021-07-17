@@ -17,7 +17,7 @@ import java.net.URI;
  * @author Kevin Hagel
  * @since 2021-07-14
  */
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity(debug = false)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
@@ -45,6 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        );
 
     http
+        .cors().disable()
         .csrf().disable()
         .authorizeRequests(authorizeRequests -> authorizeRequests
             .mvcMatchers("/api/v1/**").permitAll()

@@ -1,9 +1,8 @@
-package com.vmw.cntour.rest.endpoint;
+package com.vmw.cntour.controller;
 
 import com.vmw.cntour.model.TourRequest;
 import com.vmw.cntour.model.TourResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,20 +14,15 @@ import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 /**
- * HomeController for non rest api urls.  Note that it is a @Controller and not a @RestController
+ * IndexController controller for index.html
  *
  * @author Kevin Hagel
- * @since 2021-07-14
+ * @since 2021-07-17
  */
 @Controller
 @RequestMapping("/")
 @Slf4j
-public class HomeController {
-
-
-  @Value("${spring.application.name}")
-  String appName;
-
+public class IndexController {
 
   @GetMapping("/")
   public String homePage(HttpSession session,
@@ -36,15 +30,13 @@ public class HomeController {
       @ModelAttribute("tourRequest") TourRequest tourRequest,
       @ModelAttribute("tourResponse") TourResponse tourResponse,
       BindingResult bindingResult) {
-    model.addAttribute("appName", appName);
+    model.addAttribute("appName", getClass().getSimpleName());
     model.addAttribute("tourRequest", TourRequest.builder().build());
 
     Optional.ofNullable(session.getAttribute("tourResponse")).map(TourResponse.class::cast)
         .ifPresent(tourResponse1 -> model.addAttribute("tourResponse", tourResponse1));
 
 
-    return "home";
+    return "index";
   }
-
-
 }

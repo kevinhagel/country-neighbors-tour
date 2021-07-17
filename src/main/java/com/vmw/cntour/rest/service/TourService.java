@@ -77,9 +77,10 @@ public class TourService {
         .builder()
         .totalBudget(tourRequest.getTotalBudget())
         .numberOfTours(numberTours.intValue())
-        .currency(tourRequest.getBudgetCurrency())
+        .budgetCurrency(tourRequest.getBudgetCurrency())
+        .budgetPerCountry(tourRequest.getBudgetPerCountry())
         .remainder(leftoverAmount)
-        .startCountry(tourRequest.getStartingCountry())
+        .startingCountry(tourRequest.getStartingCountry())
         .tourCountryList(tourCountryList)
         .build();
   }

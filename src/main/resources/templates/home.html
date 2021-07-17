@@ -1,129 +1,31 @@
 <!DOCTYPE HTML>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8"/>
-    <title>SCountry Neighbors Tour</title>
+    <title>Country Neighbors Tour</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <!-- Tailwind -->
+    <link href="https://cdn.jsdelivr.net/npm/@tailwindcss/custom-forms@0.2.1/dist/custom-forms.css" rel="stylesheet">
 
 
 </head>
 <body>
 
 <!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-    <div class="container">
-        <a class="navbar-brand" href="/">Country Neighbors Tour</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                aria-controls="navbarResponsive"
-                aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home
-                        <span class="sr-only">(current)</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Services</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
-                </li>
-            </ul>
+<nav class="bg-white shadow dark:bg-gray-800">
+    <div class="container px-6 py-3 mx-auto md:flex md:justify-between md:items-center">
+        <div class="flex items-center justify-between">
+            <a class="text-xl font-bold text-gray-800 dark:text-white md:text-2xl hover:text-gray-700 dark:kover">
+                Country Neighbors Tour
+            </a>
         </div>
     </div>
 </nav>
 
+
 <div class="container">
 
-    <div class="row">
-        <div class="col-md-6">
-
-            <!--/*@thymesVar id="tourRequest" type="com.vmw.cntour.model.TourRequest"*/-->
-            <form method="post" th:object="${tourRequest}" th:action="@{/tourRequest}">
-
-                <div class="form-group">
-                    <label for="country">Starting Country</label>
-                    <input required type="text" class="form-control" id="country" placeholder="Enter country"
-                           th:field="*{startingCountry}"
-                    >
-                </div>
-
-                <div class="form-group">
-                    <label for="countryBudget">Budget Per Country</label>
-                    <input required type="number" class="form-control" id="countryBudget"
-                           placeholder="Enter Budget Per Country"
-                           th:field="*{budgetPerCountry}"
-                    >
-                </div>
-
-                <div class="form-group">
-                    <label for="totalBudget">Total Budget</label>
-                    <input required type="number" class="form-control" id="totalBudget"
-                           placeholder="Total Budget All Countries"
-                           th:field="*{totalBudget}"
-                    >
-                </div>
-
-                <div class="form-group">
-                    <label for="budgetCurrency">Budget Currency</label>
-                    <input type="text" class="form-control" id="budgetCurrency" placeholder="Total Budget Currency"
-                           th:field="*{budgetCurrency}"
-                    >
-                </div>
-                <button class="btn btn-primary" type="submit">Submit Tour</button>
-            </form>
-        </div>
-        <div class="col-md-6">
-            <dl class="row">
-                <dt class="col-sm-3">Start Country</dt>
-                <dd class="col-sm-9" th:text="${tourResponse.startCountry}"></dd>
-                <dt class="col-sm-3">Number of Tours</dt>
-                <dd class="col-sm-9" th:text="${tourResponse.numberOfTours}"></dd>
-                <dt class="col-sm-3">Total Budget</dt>
-                <dd class="col-sm-9" th:text="${tourResponse.totalBudget}"></dd>
-                <dt class="col-sm-3">Remainder</dt>
-                <dd class="col-sm-9" th:text="${tourResponse.remainder}"></dd>
-                <dt class="col-sm-3">Budget Currency</dt>
-                <dd class="col-sm-9" th:text="${tourResponse.currency}"></dd>
-
-            </dl>
-
-            <table class="table table-striped table-bordered">
-                <tr>
-                    <th>Country</th>
-                    <th>Currency</th>
-                    <th>Budget</th>
-                </tr>
-                <tr class="result" th:each="tourCountry : ${tourResponse.tourCountryList}">
-                    <td th:text="${tourCountry.country}"></td>
-                    <td th:text="${tourCountry.currency}"></td>
-                    <td th:text="${tourCountry.budget}"></td>
-                </tr>
-            </table>
-        </div>
-    </div>
 </div>
-
-
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-        crossorigin="anonymous"></script>
 
 
 </body>

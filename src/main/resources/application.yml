@@ -27,10 +27,12 @@ spring:
     enabled: true
     prefix: classpath:/templates/
     suffix: .html
+    encoding: UTF-8
+
 
 server:
   port: 8080
 
-logging:
-  level:
-    org.springframework.web.client.RestTemplate: warn
+#logging:
+#  level:
+#    org.springframework.web.client.RestTemplate: warn

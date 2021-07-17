@@ -21,11 +21,12 @@ import java.util.List;
 @Builder
 public class TourResponse {
 
-  private String startCountry;
-  private String currency;
+  private String startingCountry;
+  private String budgetCurrency;
   private BigDecimal totalBudget;
+  private BigDecimal budgetPerCountry;
   private BigDecimal remainder;
-  private int numberOfTours;
+  private Integer numberOfTours;
   @Builder.Default
   private List<TourCountry> tourCountryList = new ArrayList<>();
 
