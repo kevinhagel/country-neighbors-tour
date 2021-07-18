@@ -23,8 +23,29 @@
     integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+<style>
+  .select2-selection {
+  -webkit-box-shadow: 0;
+  box-shadow: 0;
+  background-color: #fff;
+  border: 0;
+  border-radius: 0;
+  color: #555555;
+  font-size: 16px;
+  outline: 0;
+  min-height: 48px;
+  text-align: left;
+}
 
+.select2-selection__rendered {
+  margin: 10px;
+}
 
+.select2-selection__arrow {
+  margin: 10px;
+}
+</style>
+  
 
 
 </head>
@@ -54,7 +75,7 @@
       <div class="row mb-4">
         <label for="countriesSelector" class="col-sm-2 col-form-label">Country</label>
         <div class="col-sm-4" id="starting-country-div">
-          <select class="form-select" id="countriesSelector">
+          <select class="form-select" id="countriesSelector" >
             <option value="*" selected="hidden">-- Select Starting Country --</option>
           </select>
         </div>
@@ -63,7 +84,7 @@
       <div class="row mb-3">
         <label for="currenciesSelector" class="col-sm-2 col-form-label">Currency</label>
         <div class="col-sm-4" id="budget-currency-div">
-          <select class="form-select" id="currenciesSelector">
+          <select class="form-select " id="currenciesSelector" >
             <option value="*" selected="hidden">-- Select Currency --</option>
           </select>
         </div>
