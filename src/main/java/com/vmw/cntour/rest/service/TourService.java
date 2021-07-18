@@ -28,6 +28,7 @@ public class TourService {
 
   private CountriesService countriesService;
   private ExchangeRatesService exchangeRatesService;
+  private CurrenciesMapper currenciesMapper;
 
 
   /**
@@ -48,6 +49,8 @@ public class TourService {
     if (borderCountries.isEmpty()) {
       throw new NoBordersException("no border countries for " + startingCountry.getName());
     }
+
+
 
 
     /* calculate the number of tours and the leftover amount, we can do that now. */
@@ -83,7 +86,7 @@ public class TourService {
         .budgetCurrency(tourRequest.getBudgetCurrency())
         .budgetPerCountry(tourRequest.getBudgetPerCountry())
         .remainder(leftoverAmount)
-        .startingCountry(tourRequest.getStartingCountry())
+        .startingCountry(startingCountry.getName())
         .tourCountryList(tourCountryList)
         .build();
   }
@@ -106,6 +109,16 @@ public class TourService {
   @Autowired
   public void setExchangeRatesService(ExchangeRatesService exchangeRatesService) {
     this.exchangeRatesService = exchangeRatesService;
+  }
+
+  /**
+   * Set the currencies mapper.
+   *
+   * @param currenciesMapper the mapper to set.
+   */
+  @Autowired
+  public void setCurrenciesMapper(CurrenciesMapper currenciesMapper) {
+    this.currenciesMapper = currenciesMapper;
   }
 
 }

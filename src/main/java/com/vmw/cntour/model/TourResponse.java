@@ -22,7 +22,9 @@ import java.util.List;
 public class TourResponse {
 
   private String startingCountry;
+  private String startingCountryName;
   private String budgetCurrency;
+  private String budgetCurrencyName;
   private BigDecimal totalBudget;
   private BigDecimal budgetPerCountry;
   private BigDecimal remainder;

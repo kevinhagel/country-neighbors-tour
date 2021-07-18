@@ -7,10 +7,8 @@ app:
   rapidapi-host: ajayakv-rest-countries-v1.p.rapidapi.com
   rapidapi-url: https://ajayakv-rest-countries-v1.p.rapidapi.com/rest/v1/all/
 
-#springdoc:
-#  swagger-ui:
-#    disable-swagger-default-url: true
-#    configUrl: /v3/api-docs
+  currenciesNamesResource: classpath:/currencies-names.csv
+
 
 spring:
   application:

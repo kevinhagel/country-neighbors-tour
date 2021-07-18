@@ -1,23 +1,25 @@
 package com.vmw.cntour.rest.endpoint;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vmw.cntour.model.CountryInfo;
-import com.vmw.cntour.model.TourRequest;
-import com.vmw.cntour.model.TourResponse;
+import com.vmw.cntour.model.*;
 import com.vmw.cntour.rest.service.CountriesService;
+import com.vmw.cntour.rest.service.CurrenciesMapper;
 import com.vmw.cntour.rest.service.TourService;
-import io.swagger.v3.oas.annotations.headers.Header;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import static org.springframework.util.StringUtils.startsWithIgnoreCase;
 
 /**
  * CntourController
@@ -35,6 +37,8 @@ public class CntourController {
   @Autowired
   private CountriesService countriesService;
 
+  @Autowired
+  private CurrenciesMapper currenciesMapper;
 
   @Autowired
   private ObjectMapper objectMapper;
@@ -69,10 +73,69 @@ public class CntourController {
     System.out.println("term = " + term);
     return countriesService.findAll()
         .stream()
-        .filter(countryInfo -> StringUtils.startsWithIgnoreCase(countryInfo.getName(), term))
-        .peek(c-> System.out.println(c))
+        .filter(countryInfo -> startsWithIgnoreCase(countryInfo.getName(), term))
+        .peek(c -> System.out.println(c))
         .collect(Collectors.toList());
+  }
+
+  /**
+   * returns only the country names in a {@link Select2Results} list.
+   *
+   * @return
+   */
+  @GetMapping("/countryNames")
+  @CrossOrigin
+  public Mono<ResponseEntity<Select2Results>> countryNames(
+      @RequestParam(value = "q", required = false) Optional<String> query) {
+    System.out.println("query = " + query);
+    Predicate<CountryInfo> queryFilter = countryInfo -> query
+        .map(q -> startsWithIgnoreCase(countryInfo.getName(), q)).orElse(true);
+    List<Select2Results.Result> countryNames = countriesService
+        .findAll()
+        .stream()
+        .filter(queryFilter)
+        .sorted((o1, o2) -> o1.getName().compareTo(o2.getName()))
+        .map(countryInfo -> Select2Results.Result.builder()
+            .id(countryInfo.getAlpha3Code())
+            .text(countryInfo.getName())
+            .build())
+        .collect(Collectors.toList());
+    return Mono.just(ResponseEntity.ok(Select2Results.builder().results(countryNames).build()));
+
+  }
+
+
+  /**
+   * returns only the country names in a {@link Select2Results} list.
+   *
+   * @return
+   */
+  @GetMapping("/currencyNames")
+  @CrossOrigin
+  public Mono<ResponseEntity<Select2Results>> currencyNames(
+      @RequestParam(value = "q", required = false) Optional<String> query) {
+    System.out.println("query = " + query);
+
+    Predicate<CurrencyInfo> queryFilter = ci -> query
+        .map(q -> startsWithIgnoreCase(ci.getCurrency(), q) || startsWithIgnoreCase(ci.getCurrency(),
+            q)).orElse(true);
+
+    List<Select2Results.Result> currencyNames = currenciesMapper
+        .values()
+        .stream()
+        .filter(queryFilter)
+        .sorted(((o1, o2) -> o1.getCountry().compareToIgnoreCase(o2.getCountry())))
+        .map(currencyInfo -> Select2Results.Result.builder()
+            .id(currencyInfo.getIsoCode())
+            .text(currencyInfo.getCurrency())
+            .build())
+        .collect(Collectors.toList());
+
+
+    return Mono.just(ResponseEntity.ok(Select2Results.builder().results(currencyNames).build()));
+
   }
 
 
 }
+

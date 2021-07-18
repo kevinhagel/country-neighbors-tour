@@ -16,35 +16,15 @@
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"
+    integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"
+    integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
-  <style>
-    .ui-autocomplete {
-      position: relative;
-      max-height: 300px;
-      overflow-y: auto;
-      overflow-x: hidden;
-      padding-right: 20px;
 
-    }
-
-    .ui-autocomplete-category {
-      font-size: 18px;
-      list-style: none;
-      width: 200px;
-    }
-
-    .ui-menu-item {
-      list-style: none;
-      width: 400px;
-      cursor: default;
-      background-color: whitesmoke;
-    }
-
-    .ui-helper-hidden-accessible {
-      display: none;
-    }
-  </style>
 
 
 </head>
@@ -58,63 +38,67 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navmenu">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a href="#" class="nav-link">Countries</a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">Currencies</a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">Conversion</a>
-          </li>
-        </ul>
+        <form class="d-flex ">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
       </div>
     </div>
   </nav>
 
   <div class="container">
+
     <form class="row" id="tourForm">
-      <div class="row mb-3">
-        <label for="startingCountry" class="col-sm-2 col-form-label">Country</label>
-        <div class="dropdown col-sm-6 " id="starting-country-div">
-          <input required type="text" class="form-control basicAutoComplete" id="startingCountry"
-            placeholder="Starting Country" autocomplete="off">
+
+
+      <div class="row mb-4">
+        <label for="countriesSelector" class="col-sm-2 col-form-label">Country</label>
+        <div class="col-sm-4" id="starting-country-div">
+          <select class="form-select" id="countriesSelector">
+            <option value="*" selected="hidden">-- Select Starting Country --</option>
+          </select>
         </div>
       </div>
+
       <div class="row mb-3">
-        <label for="budgetCurrency" class="col-sm-2 col-form-label">Currency</label>
-        <div class="col-sm-6">
-          <input required type="text" class="form-control" id="budgetCurrency" placeholder="Budget Currency" value="">
+        <label for="currenciesSelector" class="col-sm-2 col-form-label">Currency</label>
+        <div class="col-sm-4" id="budget-currency-div">
+          <select class="form-select" id="currenciesSelector">
+            <option value="*" selected="hidden">-- Select Currency --</option>
+          </select>
         </div>
       </div>
+
       <div class="row mb-3">
         <label for="totalBudget" class="col-sm-2 col-form-label">Total Budget</label>
-        <div class="col-sm-6">
+        <div class="col-sm-4">
           <input required type="number" class="form-control" id="totalBudget" placeholder="Total Budget" value="">
         </div>
       </div>
       <div class="row mb-3">
         <label for="budgetPerCountry" class="col-sm-2 col-form-label">Budget Per Country</label>
-        <div class="col-sm-6">
+        <div class="col-sm-4">
           <input required type="number" class="form-control" id="budgetPerCountry" placeholder="Budget Per Country"
             value="">
         </div>
       </div>
 
       <!-- Button trigger modal -->
-      <div class="row mb-10">
-        <div class="col">
-          <button type="submit" class="btn btn-primary col-sm-3" id="requestTour">Request Tour</button>
+      <div class="row mb-3 justify-content-left">
+        <div class="col-sm-1">
+          <button type="submit" class="btn-large text-nowrap btn-outline-secondary " id="requestTour">Request
+            Tour</button>
         </div>
-        <div class="col">
-          <button type="reset" class="btn btn-primary col-sm-3" id="resetTour">Reset </button>
+        <span style="width:3em;"> </span>
+
+        <div class="col-sm-1">
+          <button type="reset" class="btn-small btn-outline-secondary" id="resetTour">Reset </button>
         </div>
       </div>
 
       <!-- Modal -->
-      <div class="modal modal-lg fade " data-bs-backdrop="static" data-bs-keyboard="false" id="tourModal"
-        tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal modal-lg fade " data-bs-backdrop="static" data-bs-keyboard="false" id="tourModal" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable">
           <div class="modal-content">
             <div class="modal-header">
@@ -146,11 +130,6 @@
                   </tr>
                 </thead>
                 <tbody id="tbody">
-                  <!-- <tr class="result">
-                  <td th:text="${tourCountry.country}"></td>
-                  <td th:text="${tourCountry.currency}"></td>
-                  <td th:text="${tourCountry.budget}"></td>
-                </tr> -->
                 </tbody>
               </table>
 
@@ -170,34 +149,70 @@
 
 
   <script>
-    var myModal = document.getElementById('tourModal')
 
-    myModal.addEventListener('hidden.bs.modal', function (event) {
-      $('#tbody').empty();
-      $('#modalTitle').empty();
-          $('#numberTours').text();
-          $('#tourBudgetCurrency').text();
-          $('#tourTotalBudget').text();
-          $('#tourBudgetPerCountry').text();
-          $('#tourRemainder').text();
-    })
+    // $(document).ready(function () {
+    //   $('#startingCountrySelector').select2({
+    //   });
+
+    // });
 
     $(document).ready(function () {
-      $('#requestTour').click(function (e) {
-        $('#tourModal').modal('show');
-        e.preventDefault();
+      $('#countriesSelector').select2({
+        ajax: {
+          url: 'http://localhost:8080/api/v1/countryNames',
+          dataType: 'json'
+          // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+        }
       });
+
+      $('#currenciesSelector').select2({
+        ajax: {
+          url: 'http://localhost:8080/api/v1/currencyNames',
+          dataType: 'json'
+          // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+        }
+      });
+
 
 
     });
 
 
+
+    /*
+    Handle the modal, the tour displayed in the modal
+    */
+    var tourModal = document.getElementById('tourModal')
+    tourModal.addEventListener('hidden.bs.modal', function (event) {
+      $('#tbody').empty();
+      $('#modalTitle').empty();
+      $('#numberTours').text();
+      $('#tourBudgetCurrency').text();
+      $('#tourTotalBudget').text();
+      $('#tourBudgetPerCountry').text();
+      $('#tourRemainder').text();
+    })
+    $(document).ready(function () {
+      $('#requestTour').click(function (e) {
+        $('#tourModal').modal('show');
+        e.preventDefault();
+      });
+    });
+
+
+
+
+
+
+    /*
+    Handle the submit, the request tour
+    */
     $("#requestTour").click(function (e) {
       e.preventDefault();
 
       var tourRequest = {
-        startingCountry: $("#startingCountry").val(),
-        budgetCurrency: $("#budgetCurrency").val(),
+        startingCountry: $("#countriesSelector").val(),
+        budgetCurrency: $("#currenciesSelector").val(),
         totalBudget: $("#totalBudget").val(),
         budgetPerCountry: $("#budgetPerCountry").val()
       };
@@ -243,41 +258,7 @@
     });
 
 
-    $(document).ready(function () {
-      $('#startingCountry').autocomplete({
 
-        source: function (request, response) {
-          var param = {
-            term: request.term
-          };
-          $.ajax({
-            contentType: 'application/json',
-            url: 'http://localhost:8080/api/v1/countries',
-            type: 'GET',
-            cache: false,
-            dataType: 'json',
-            data: param,
-            success: function (data) {
-
-              var shit = $.map(data, function (item) {
-                return {
-                  value: item.name
-                }
-              });
-              response(shit);
-            },
-            error: function (data) {
-              alert('error! ' + data);
-            }
-          });
-        },
-        minLength: 2,
-        select: function (event, ui) {
-          $("#startingCountry").val(ui.item.value);
-          return false;
-        }
-      })
-    })
 
 
   </script>
