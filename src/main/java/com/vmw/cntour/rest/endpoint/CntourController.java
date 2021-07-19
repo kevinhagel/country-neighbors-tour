@@ -114,8 +114,6 @@ public class CntourController {
   @CrossOrigin
   public Mono<ResponseEntity<Select2Results>> currencyNames(
       @RequestParam(value = "q", required = false) Optional<String> query) {
-    System.out.println("query = " + query);
-
     Predicate<CurrencyInfo> queryFilter = ci -> query
         .map(q -> startsWithIgnoreCase(ci.getCurrency(), q) || startsWithIgnoreCase(ci.getCurrency(),
             q)).orElse(true);
@@ -133,6 +131,33 @@ public class CntourController {
 
 
     return Mono.just(ResponseEntity.ok(Select2Results.builder().results(currencyNames).build()));
+
+  }
+
+  /**
+   * returns only the country names in a {@link Select2Results} list.
+   *
+   * @return
+   */
+  @GetMapping("/currencyName")
+  @CrossOrigin
+  public Mono<ResponseEntity<Select2Results.Result>> currencyName(
+      @RequestParam(value = "isoCountry", required = true) String isoCountry) {
+
+    CurrencyInfo currencyInfo = countriesService.findCountry(isoCountry)
+        .flatMap(countryInfo -> countryInfo
+            .getCurrencies()
+            .stream()
+            .findFirst()
+            .flatMap(isoCurrency -> currenciesMapper.find(isoCurrency))
+        ).orElse(CurrencyInfo.builder().currency("Euro").isoCode("EUR").build());
+
+
+    return Mono.just(ResponseEntity.ok(Select2Results.Result
+        .builder()
+        .id(currencyInfo.getIsoCode())
+        .text(currencyInfo.getCurrency())
+        .build()));
 
   }
 

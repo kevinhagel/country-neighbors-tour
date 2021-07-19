@@ -39,6 +39,15 @@ public class CurrenciesMapper {
     return currenciesMap.values();
   }
 
+  /**
+   * given an ISO Currency, return the currency info.
+   * @param isoCurrency the iso currency
+   * @return the currency info, in an optional.
+   */
+  public Optional<CurrencyInfo> find(String isoCurrency) {
+    return Optional.ofNullable(currenciesMap.get(isoCurrency));
+  }
+
   private void load(Resource resource) {
     log.info("loading currencies from {}", resource);
     try (InputStream is = resource.getInputStream(); Scanner scanner = new Scanner(is)) {

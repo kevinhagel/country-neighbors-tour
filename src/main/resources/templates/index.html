@@ -23,29 +23,29 @@
     integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-<style>
-  .select2-selection {
-  -webkit-box-shadow: 0;
-  box-shadow: 0;
-  background-color: #fff;
-  border: 0;
-  border-radius: 0;
-  color: #555555;
-  font-size: 16px;
-  outline: 0;
-  min-height: 48px;
-  text-align: left;
-}
+  <style>
+    .select2-selection {
+      -webkit-box-shadow: 0;
+      box-shadow: 0;
+      background-color: #fff;
+      border: 0;
+      border-radius: 0;
+      color: #555555;
+      font-size: 16px;
+      outline: 0;
+      min-height: 48px;
+      text-align: left;
+    }
 
-.select2-selection__rendered {
-  margin: 10px;
-}
+    .select2-selection__rendered {
+      margin: 10px;
+    }
 
-.select2-selection__arrow {
-  margin: 10px;
-}
-</style>
-  
+    .select2-selection__arrow {
+      margin: 10px;
+    }
+  </style>
+
 
 
 </head>
@@ -58,26 +58,29 @@
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navmenu">
+      <!-- <div class="collapse navbar-collapse" id="navmenu">
         <form class="d-flex ">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
-      </div>
+      </div> -->
     </div>
   </nav>
 
   <div class="container">
-
-    <form class="row" id="tourForm">
-
-
+    <!--
+      MAIN FORM
+    -->
+    <form class="row needs-validation" id="tourForm" novalidate>
       <div class="row mb-4">
         <label for="countriesSelector" class="col-sm-2 col-form-label">Country</label>
         <div class="col-sm-4" id="starting-country-div">
-          <select class="form-select" id="countriesSelector" style="min-width: 300px;" >
+          <select class="form-select" id="countriesSelector" style="min-width: 300px;">
             <option value="*" selected="hidden">-- Select Starting Country --</option>
           </select>
+          <div class="valid-feedback">
+            Looks good!
+          </div>
         </div>
       </div>
 
@@ -107,8 +110,8 @@
       <!-- Button trigger modal -->
       <div class="row mb-3 justify-content-left">
         <div class="col-sm-1">
-          <button type="submit" class="btn-large text-nowrap btn-outline-secondary " id="requestTour">Request
-            Tour</button>
+          <button type="submit" class="btn-large text-nowrap btn-outline-secondary " id="requestTour">
+            Request Tour</button>
         </div>
         <span style="width:3em;"> </span>
 
@@ -171,6 +174,27 @@
 
   <script>
 
+
+(function () {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  var forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
+
     // $(document).ready(function () {
     //   $('#startingCountrySelector').select2({
     //   });
@@ -180,17 +204,19 @@
     $(document).ready(function () {
       $('#countriesSelector').select2({
         ajax: {
+          cache: true,
           url: 'http://localhost:8080/api/v1/countryNames',
           dataType: 'json'
-          // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
         }
       });
 
+
+
       $('#currenciesSelector').select2({
         ajax: {
+          cache: true,
           url: 'http://localhost:8080/api/v1/currencyNames',
           dataType: 'json'
-          // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
         }
       });
 
@@ -223,13 +249,13 @@
 
 
 
-
-
     /*
     Handle the submit, the request tour
     */
     $("#requestTour").click(function (e) {
+
       e.preventDefault();
+
 
       var tourRequest = {
         startingCountry: $("#countriesSelector").val(),
